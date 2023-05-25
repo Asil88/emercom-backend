@@ -11,8 +11,6 @@ public interface UserService {
 
     Optional<User> getUserById(int id);
 
-    void createUser(User user);
-
     void updateUserById(User user);
 
     boolean deleteUserById(Integer id);

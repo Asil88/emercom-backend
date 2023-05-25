@@ -1,10 +1,11 @@
 package by.EMERCOM.model.domain;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -33,6 +34,10 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "birthday")
-    private Date birthday;
+    @Column(name = "country_of_residence")
+    private String countryOfResidence;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 }

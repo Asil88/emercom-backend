@@ -1,63 +1,60 @@
 package by.EMERCOM.controller;
 
 import by.EMERCOM.exception.ResourceNotFoundException;
+import by.EMERCOM.mapper.UserToResponseUserMapper;
 import by.EMERCOM.model.domain.User;
+import by.EMERCOM.model.response.UserResponse;
 import by.EMERCOM.service.UserService;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user")
 public class UserController {
 
     private UserService userService;
 
+    private UserToResponseUserMapper userToResponseUserMapper;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserToResponseUserMapper userToResponseUserMapper) {
         this.userService = userService;
+        this.userToResponseUserMapper = userToResponseUserMapper;
     }
 
-    @GetMapping("/findAll")
+
+    @GetMapping("")
     public ResponseEntity<List<User>> findAllUsers() {
         Optional<List<User>> optionalUsers = userService.findAllUsers();
         if (optionalUsers.isPresent()) {
             List<User> allUsers = optionalUsers.get();
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(allUsers, HttpStatus.OK);
         } else {
             throw new ResourceNotFoundException("USERS NOT FOUND");
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
+    public ResponseEntity<UserResponse> getUserById(@PathVariable int id) {
         Optional<User> userById = userService.getUserById(id);
         if (userById.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            User user = userById.get();
+            UserResponse userResponse = userToResponseUserMapper.userToResponse(user);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else {
             throw new ResourceNotFoundException("USER NOT FOUND");
         }
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                log.warn(o.getDefaultMessage());
-            }
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        userService.createUser(user);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/updateInfo")
