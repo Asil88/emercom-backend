@@ -6,7 +6,8 @@ import by.EMERCOM.model.domain.User;
 import by.EMERCOM.model.response.UserResponse;
 import by.EMERCOM.model.util.SortValueEnum;
 import by.EMERCOM.service.UserService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -26,6 +26,8 @@ public class UserController {
     private UserService userService;
 
     private UserToResponseUserMapper userToResponseUserMapper;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public UserController(UserService userService, UserToResponseUserMapper userToResponseUserMapper) {
@@ -86,7 +88,7 @@ public class UserController {
     public ResponseEntity<HttpStatus> updateUserById(@RequestBody @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                log.warn(o.getDefaultMessage());
+                logger.warn(o.getDefaultMessage());
             }
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }

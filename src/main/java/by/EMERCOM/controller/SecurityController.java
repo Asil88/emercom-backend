@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @RestController
 public class SecurityController {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final SecurityServiceImpl securityServiceImpl;
 
     @Autowired
@@ -29,7 +29,7 @@ public class SecurityController {
     public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid RegistrationUser registrationUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                log.warn(o.getDefaultMessage());
+                logger.warn(o.getDefaultMessage());
             }
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
