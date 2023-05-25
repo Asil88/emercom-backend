@@ -4,11 +4,11 @@ import by.EMERCOM.exception.ResourceNotFoundException;
 import by.EMERCOM.mapper.UserToResponseUserMapper;
 import by.EMERCOM.model.domain.User;
 import by.EMERCOM.model.response.UserResponse;
+import by.EMERCOM.model.util.SortValueEnum;
 import by.EMERCOM.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -33,7 +33,6 @@ public class UserController {
         this.userToResponseUserMapper = userToResponseUserMapper;
     }
 
-
     @GetMapping("")
     public ResponseEntity<List<User>> findAllUsers() {
         Optional<List<User>> optionalUsers = userService.findAllUsers();
@@ -54,6 +53,32 @@ public class UserController {
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else {
             throw new ResourceNotFoundException("USER NOT FOUND");
+        }
+    }
+
+    @GetMapping("/sort/{params}")
+    public ResponseEntity<List<User>> sortUserByValue(@PathVariable SortValueEnum params, @RequestParam String value ) {
+        Optional<List<User>> optionalUsers;
+
+        switch (params) {
+            case Country:
+                optionalUsers = userService.sortUserByCountry(value);
+                break;
+            case Name:
+                optionalUsers = userService.sortUserByName(value);
+                break;
+            case Surname:
+                optionalUsers = userService.sortUserBySurname(value);
+                break;
+            default:
+                throw new ResourceNotFoundException("VALUE NOT FOUND");
+        }
+
+        if (optionalUsers.isPresent()) {
+            List<User> sortedUsers = optionalUsers.get();
+            return new ResponseEntity<>(sortedUsers, HttpStatus.OK);
+        } else {
+            throw new ResourceNotFoundException("VALUE NOT FOUND");
         }
     }
 

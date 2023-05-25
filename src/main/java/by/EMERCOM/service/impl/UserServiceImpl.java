@@ -33,6 +33,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<List<User>>sortUserByName(String name){
+        return Optional.of((ArrayList<User>) userRepository.findAllByName(name));
+    }
+    public Optional<List<User>>sortUserBySurname(String surname){
+        return Optional.of((ArrayList<User>) userRepository.findAllBySurname(surname));
+    }
+    public Optional<List<User>>sortUserByCountry(String country){
+        return Optional.of((ArrayList<User>) userRepository.findAllByCountry(country));
+    }
+
     @Override
     public void updateUserById(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));

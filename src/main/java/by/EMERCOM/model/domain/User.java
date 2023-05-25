@@ -34,10 +34,6 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "country_of_residence")
-    private String countryOfResidence;
-
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @Column(name = "country")
+    private String country;
 }

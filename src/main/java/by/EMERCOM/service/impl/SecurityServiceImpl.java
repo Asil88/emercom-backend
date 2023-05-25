@@ -28,7 +28,7 @@ public class SecurityServiceImpl implements SecurityService {
             user.setName(registrationUser.getName());
             user.setSurname(registrationUser.getSurname());
             user.setEmail(registrationUser.getEmail());
-            user.setCountryOfResidence(registrationUser.getCountryOfResidence());
+            user.setCountry(registrationUser.getCountry());
             user.setLogin(registrationUser.getLogin());
             user.setPassword(passwordEncoder.encode(registrationUser.getPassword()));
 

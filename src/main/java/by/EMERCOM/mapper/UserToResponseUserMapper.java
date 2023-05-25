@@ -11,7 +11,7 @@ public class UserToResponseUserMapper {
         userResponse.setName(user.getName());
         userResponse.setSurname(user.getSurname());
         userResponse.setEmail(user.getEmail());
-        userResponse.setCountryOfResidence(user.getCountryOfResidence());
+        userResponse.setCountry(user.getCountry());
         return userResponse;
     }
 }

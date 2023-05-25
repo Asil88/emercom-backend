@@ -11,5 +11,5 @@ public class RegistrationUser {
     private String email;
     private String name;
     private String surname;
-    private String countryOfResidence;
+    private String country;
 }
