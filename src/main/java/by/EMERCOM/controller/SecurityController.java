@@ -2,7 +2,7 @@ package by.EMERCOM.controller;
 
 
 import by.EMERCOM.model.request.RegistrationUser;
-import by.EMERCOM.service.impl.SecurityServiceImpl;
+import by.EMERCOM.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ import javax.validation.Valid;
 @RestController
 public class SecurityController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final SecurityServiceImpl securityServiceImpl;
+    private final SecurityService securityService;
 
     @Autowired
-    public SecurityController(SecurityServiceImpl securityServiceImpl) {
-        this.securityServiceImpl = securityServiceImpl;
+    public SecurityController(SecurityService securityService) {
+        this.securityService = securityService;
     }
 
     @PostMapping("/registration")
@@ -33,7 +33,7 @@ public class SecurityController {
             }
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        securityServiceImpl.registration(registrationUser);
+        securityService.registration(registrationUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

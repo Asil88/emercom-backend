@@ -4,7 +4,7 @@ import by.EMERCOM.exception.ResourceNotFoundException;
 import by.EMERCOM.mapper.UserToResponseUserMapper;
 import by.EMERCOM.model.domain.User;
 import by.EMERCOM.model.response.UserResponse;
-import by.EMERCOM.model.util.SortValueEnum;
+import by.EMERCOM.util.SortValueEnum;
 import by.EMERCOM.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,6 @@ package by.EMERCOM.service;
 
 import by.EMERCOM.model.domain.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
