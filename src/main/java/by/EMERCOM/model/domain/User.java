@@ -1,6 +1,6 @@
 package by.EMERCOM.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class User {
     private int id;
 
     @NotBlank(message = "Логин обязателен")
-    @Size(min = 3,max = 16,message = "Логин должен быть не меньше 3 и не больше 16 символов")
+    @Size(min = 3, max = 16, message = "Логин должен быть не меньше 3 и не больше 16 символов")
     @Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Логин может содержать только буквенно-цифровые символы, символ подчеркивания и дефис.")
     @Column(name = "login")
     private String login;
@@ -48,4 +48,6 @@ public class User {
 
     @Column(name = "country")
     private String country;
+
+
 }
