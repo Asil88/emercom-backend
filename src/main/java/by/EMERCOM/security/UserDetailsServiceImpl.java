@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -23,12 +24,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findUserByLogin(s);
-        if (user.isEmpty()) {
+
+        if (user.isPresent()) {
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.get().getLogin())
+                    .password(user.get().getPassword())
+                    .roles(userRepository.getRole(user.get().getId())).build();
+        } else {
             throw new UsernameNotFoundException(s);
         }
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.get().getLogin())
-                .password(user.get().getPassword())
-                .roles(userRepository.getRole(user.get().getId())).build();
     }
 }

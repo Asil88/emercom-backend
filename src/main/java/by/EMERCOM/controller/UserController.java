@@ -24,9 +24,7 @@ import java.util.Optional;
 public class UserController {
 
     private UserService userService;
-
     private UserToResponseUserMapper userToResponseUserMapper;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -84,7 +82,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateInfo")
+    @PutMapping("/update")
     public ResponseEntity<HttpStatus> updateUserById(@RequestBody @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {

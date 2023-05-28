@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -42,16 +43,26 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login","/registration", "/swagger-ui/index.html").permitAll()
+                .antMatchers("/login", "/registration", "/swagger-ui/index.html").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/webjars/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().httpBasic()
-                .and().build();
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/swagger-ui/index.html#/", true)
+                .permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .permitAll();
+        return http.build();
     }
 
     @Bean

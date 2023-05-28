@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -33,8 +36,27 @@ public class SecurityController {
             }
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        securityService.registration(registrationUser);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        boolean registrationSuccess = securityService.registration(registrationUser);
+        if (registrationSuccess) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<HttpStatus> login(@RequestParam String login, @RequestParam String password) {
+        boolean loginSuccess = securityService.login(login, password);
+        if (loginSuccess) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<HttpStatus> logout() {
+        securityService.logout();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
