@@ -3,23 +3,20 @@ version: '3.9'
 services:
   db:
     container_name: db
+    image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=sa
+      - SA_PASSWORD=MyStrongPassword11
       - MSSQL_PID=Developer
       - MSSQL_TCP_PORT=1433
-    image: mcr.microsoft.com/mssql/server:2019-latest
     networks:
       - emercomTest
 
   app:
     container_name: app
     image: asil88/emercomapp:v1
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
