@@ -17,7 +17,7 @@
 * Логирование: SLF4J
 * Валидация: Java Bean Validation API
 
-* База данных: MS SQL SERVER 2019 (Порт по-умолчанию:1433) (User:sa;Password:sa)
+* База данных: MS SQL SERVER 2019 (Порт по-умолчанию:1433) ~~(User:sa;Password:sa)~~ (User:USER1;Password:USER1qwerty)  
 * Работа с базой данных: Spring Data JPA
 * Миграции баз данных: Flyway
 
@@ -25,7 +25,20 @@
 
 * Управление контейнеризацией: Docker
 
+application.properties:
+<pre>
+spring.datasource.username=USER1
+spring.datasource.password=USER1qwerty
+spring.datasource.url=jdbc:sqlserver://localhost:1433;database=emercom_db;trustServerCertificate=true;
+spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
 
+spring.flyway.clean-on-validation-error=true
+spring.flyway.locations=classpath:/db/migration
+spring.flyway.baseline-on-migrate=true
+spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect
+
+spring.mvc.throw-exception-if-no-handler-found = true
+</pre>  
 
 # Security Endpoints:
 
